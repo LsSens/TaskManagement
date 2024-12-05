@@ -8,39 +8,22 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestão de Tarefas</title>
 
-    <!-- CSS Customizado -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            margin-top: 50px;
-        }
-
-        .modal-content {
-            border-radius: 10px;
-        }
-
-        .btn-actions {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/custom.css" />
 </head>
 
 <body>
     <div class="container">
         <h1 class="mb-4 text-center">Gestão de Tarefas</h1>
 
-        <!-- Botão para criar nova tarefa -->
-        <button id="createTaskBtn" class="btn btn-primary mb-3">Criar Tarefa</button>
+        <button id="createTaskBtn" class="btn btn-primary mb-3">
+            Criar Tarefa
+        </button>
 
-        <!-- Tabela de tarefas -->
         <table id="tasksTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -54,7 +37,7 @@
         </table>
     </div>
 
-    <!-- Modal para criação/edição -->
+    <!-- Modal -->
     <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -64,10 +47,10 @@
                 </div>
                 <div class="modal-body">
                     <form id="taskForm">
-                        <input type="hidden" id="taskId" name="id">
+                        <input type="hidden" id="taskId" name="id" />
                         <div class="mb-3">
                             <label for="taskTitle" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="taskTitle" name="title" required>
+                            <input type="text" class="form-control" id="taskTitle" name="title" required />
                         </div>
                         <div class="mb-3">
                             <label for="taskDescription" class="form-label">Descrição</label>
@@ -95,127 +78,13 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // Inicializa a tabela com DataTables
-            $('#tasksTable').DataTable({
-                ajax: '/api/tasks',
-                columns: [
-                    { data: 'title' },
-                    { data: 'description' },
-                    { data: 'priority' },
-                    { data: 'status' },
-                    {
-                        data: null,
-                        render: function (data) {
-                            return `
-                    <div class="btn-actions">
-                        <button class="btn btn-warning btn-sm" onclick="editTask(${data.id})">Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTask(${data.id})">Excluir</button>
-                    </div>
-                `;
-                        }
-                    }
-                ],
-                paging: true,
-                searching: true,
-                ordering: true,
-                language: {
-                    decimal: ",",
-                    thousands: ".",
-                    search: "Buscar:",
-                    lengthMenu: "Exibir _MENU_ Registros por página",
-                    info: "Exibindo _START_ a _END_ de _TOTAL_ Registros",
-                    infoEmpty: "Nenhum registro disponível",
-                    infoFiltered: "(filtrado de _MAX_ Registros no total)",
-                    loadingRecords: "Carregando...",
-                    processing: "Processando...",
-                    zeroRecords: "Nenhum registro encontrado",
-                    emptyTable: "Nenhuma informação disponível na tabela",
-                    paginate: {
-                        first: "Primeiro",
-                        previous: "Anterior",
-                        next: "Próximo",
-                        last: "Último"
-                    },
-                    aria: {
-                        sortAscending: ": ativar para ordenar a coluna em ordem crescente",
-                        sortDescending: ": ativar para ordenar a coluna em ordem decrescente"
-                    }
-                }
-            });
-
-            // Abrir o modal para criar nova tarefa
-            $('#createTaskBtn').click(function () {
-                $('#taskForm')[0].reset();
-                $('#taskId').val('');
-                $('#taskModalLabel').text('Nova Tarefa');
-                $('#taskModal').modal('show');
-            });
-
-            // Submeter o formulário
-            $('#taskForm').submit(function (e) {
-                e.preventDefault();
-
-                // Obtém os dados do formulário e converte para um objeto JavaScript
-                const taskId = $('#taskId').val(); // O ID da tarefa
-                const taskData = {
-                    title: $('#taskTitle').val(),
-                    description: $('#taskDescription').val(),
-                    priority: $('#taskPriority').val(),
-                    status: $('#taskStatus').val()
-                };
-
-                // Define a URL e o método
-                const url = taskId ? `/api/tasks/${taskId}` : '/api/tasks';
-                const method = taskId ? 'PUT' : 'POST';
-
-                // Faz a requisição AJAX
-                $.ajax({
-                    url: url,
-                    method: method,
-                    contentType: 'application/json', // Define o Content-Type como JSON
-                    data: JSON.stringify(taskData), // Converte os dados para JSON
-                    success: function () {
-                        $('#taskModal').modal('hide'); // Fecha o modal
-                        $('#tasksTable').DataTable().ajax.reload(); // Atualiza a tabela
-                    },
-                    error: function (xhr, status, error) {
-                        alert('Erro ao salvar a tarefa! ' + xhr.responseText);
-                    }
-                });
-            });
-        });
-
-        // Função para editar tarefa
-        function editTask(id) {
-            $.get(`/api/tasks/${id}`, function (data) {
-                $('#taskId').val(data.id);
-                $('#taskTitle').val(data.title);
-                $('#taskDescription').val(data.description);
-                $('#taskPriority').val(data.priority);
-                $('#taskStatus').val(data.status);
-                $('#taskModalLabel').text('Editar Tarefa');
-                $('#taskModal').modal('show');
-            });
-        }
-
-        // Função para excluir tarefa
-        function deleteTask(id) {
-            if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-                $.ajax({
-                    url: `/api/tasks/${id}`,
-                    method: 'DELETE',
-                    success: function () {
-                        $('#tasksTable').DataTable().ajax.reload();
-                    },
-                    error: function () {
-                        alert('Erro ao excluir a tarefa!');
-                    }
-                });
-            }
-        }
-    </script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="/js/api/tasks.js" type="module"></script>
+    <script src="/js/ui/modals.js" type="module"></script>
+    <script src="/js/ui/table.js" type="module"></script>
+    <script src="/js/main.js" type="module"></script>
 </body>
 
 </html>

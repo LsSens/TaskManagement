@@ -37,16 +37,13 @@ public class TasksController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetTaskById(int id)
     {
-        // Busca a tarefa no banco de dados pelo ID
         var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
 
         if (task == null)
         {
-            // Retorna 404 se a tarefa não for encontrada
             return NotFound(new { message = "Tarefa não encontrada." });
         }
 
-        // Retorna a tarefa como JSON
         return Ok(task);
     }
 
@@ -58,7 +55,6 @@ public class TasksController : ControllerBase
             return BadRequest(new { message = "Dados inválidos." });
         }
 
-        // Validação adicional (opcional)
         if (string.IsNullOrWhiteSpace(task.Title) ||
             string.IsNullOrWhiteSpace(task.Priority.ToString()) ||
             string.IsNullOrWhiteSpace(task.Status.ToString()))
@@ -66,11 +62,9 @@ public class TasksController : ControllerBase
             return BadRequest(new { message = "Os campos Título, Prioridade e Status são obrigatórios." });
         }
 
-        // Adiciona a nova tarefa ao banco de dados
         _context.Tasks.Add(task);
         _context.SaveChanges();
 
-        // Retorna a tarefa criada com o status 201 (Created)
         return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, task);
     }
 
