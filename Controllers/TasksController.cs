@@ -12,6 +12,13 @@ public class TasksController : ControllerBase
         _context = context;
     }
 
+    /// <summary>
+    /// Obtém todas as tarefas com suporte a filtro por status.
+    /// </summary>
+    /// <param name="status">Status opcional para filtrar tarefas (Pendente, Concluído).</param>
+    /// <returns>Uma lista de tarefas.</returns>
+    /// <response code="200">Lista de tarefas retornada com sucesso.</response>
+    /// <response code="400">Status inválido fornecido.</response>
     [HttpGet]
     public IActionResult GetTasks([FromQuery] string? status)
     {
@@ -34,6 +41,13 @@ public class TasksController : ControllerBase
         return Ok(new { data = tasks.ToList() });
     }
 
+    /// <summary>
+    /// Obtém os detalhes de uma tarefa específica.
+    /// </summary>
+    /// <param name="id">ID da tarefa.</param>
+    /// <returns>Detalhes da tarefa.</returns>
+    /// <response code="200">Tarefa retornada com sucesso.</response>
+    /// <response code="404">Tarefa não encontrada.</response>
     [HttpGet("{id}")]
     public IActionResult GetTaskById(int id)
     {
@@ -47,6 +61,13 @@ public class TasksController : ControllerBase
         return Ok(task);
     }
 
+    /// <summary>
+    /// Cria uma nova tarefa.
+    /// </summary>
+    /// <param name="task">Dados da tarefa a ser criada.</param>
+    /// <returns>Tarefa criada com sucesso.</returns>
+    /// <response code="201">Tarefa criada com sucesso.</response>
+    /// <response code="400">Dados inválidos.</response>
     [HttpPost]
     public IActionResult CreateTask([FromBody] TaskItem task)
     {
@@ -70,6 +91,15 @@ public class TasksController : ControllerBase
          new { success = true, message = "Tarefa criada com sucesso.", data = task });
     }
 
+    /// <summary>
+    /// Atualiza uma tarefa existente.
+    /// </summary>
+    /// <param name="id">ID da tarefa a ser atualizada.</param>
+    /// <param name="updates">Dados para atualização.</param>
+    /// <returns>Tarefa atualizada com sucesso.</returns>
+    /// <response code="200">Tarefa atualizada com sucesso.</response>
+    /// <response code="400">Dados inválidos.</response>
+    /// <response code="404">Tarefa não encontrada.</response>
     [HttpPut("{id}")]
     public IActionResult UpdateTask(int id, [FromBody] JsonElement updates)
     {
@@ -118,6 +148,13 @@ public class TasksController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Exclui uma tarefa.
+    /// </summary>
+    /// <param name="id">ID da tarefa a ser excluída.</param>
+    /// <returns>Confirmação da exclusão.</returns>
+    /// <response code="200">Tarefa excluída com sucesso.</response>
+    /// <response code="404">Tarefa não encontrada.</response>
     [HttpDelete("{id}")]
     public IActionResult DeleteTask(int id)
     {
