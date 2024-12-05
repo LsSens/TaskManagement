@@ -21,16 +21,6 @@
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
     </header>
@@ -39,10 +29,12 @@
             @RenderBody()
         </main>
     </div>
+    <div id="alertBootstrap"></div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - TaskManagement - <a asp-area="" asp-page="/Privacy">Lucas Sens</a>
+        <div class="container" style="text-align: center; margin-top: 8px;">
+            &copy; 2024 - TaskManagement - <a href="https://www.linkedin.com/in/lucassens/" target="_blank">Lucas
+                Sens</a>
         </div>
     </footer>
 

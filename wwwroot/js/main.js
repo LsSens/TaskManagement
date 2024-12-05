@@ -19,11 +19,28 @@ $(document).ready(function () {
     };
 
     try {
-      await saveTask(taskId, taskData);
+      const response = await saveTask(taskId, taskData);
       closeTaskModal();
       taskTable.ajax.reload();
+
+      showAlert("Tarefa salva com sucesso!", "success");
     } catch (error) {
-      alert(error.message);
+      const errorMessage =
+        error.responseJSON?.message || "Erro ao salvar a tarefa!";
+      showAlert(errorMessage, "danger");
     }
   });
 });
+
+function showAlert(message, type) {
+  const alertBox = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  `;
+
+  $("#alertBootstrap").prepend(alertBox);
+
+  setTimeout(() => $(".alert").alert("close"), 5000);
+}

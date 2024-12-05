@@ -18,39 +18,44 @@
 
 <body>
     <div class="container">
-        <h1 class="mb-4 text-center">Gestão de Tarefas</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold text-primary">Gestão de Tarefas</h1>
+            <button id="createTaskBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nova Tarefa
+            </button>
+        </div>
 
-        <button id="createTaskBtn" class="btn btn-primary mb-3">
-            Criar Tarefa
-        </button>
-
-        <table id="tasksTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Descrição</th>
-                    <th>Prioridade</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="table-container">
+            <table id="tasksTable" class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Prioridade</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="taskModalLabel">Nova Tarefa</h5>
+                    <h5 class="modal-title" id="taskModalLabel">
+                        <i class="fas fa-tasks"></i> Nova Tarefa
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="taskForm">
-                        <input type="hidden" id="taskId" name="id" />
+                        <input type="hidden" id="taskId" name="id">
                         <div class="mb-3">
                             <label for="taskTitle" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="taskTitle" name="title" required />
+                            <input type="text" class="form-control" id="taskTitle" name="title" required>
                         </div>
                         <div class="mb-3">
                             <label for="taskDescription" class="form-label">Descrição</label>
@@ -71,7 +76,9 @@
                                 <option value="Concluído">Concluído</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success">Salvar</button>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
                     </form>
                 </div>
             </div>

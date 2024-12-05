@@ -8,7 +8,34 @@ export function initializeTaskTable() {
       { data: "title" },
       { data: "description" },
       { data: "priority" },
-      { data: "status" },
+      {
+        data: "status",
+        render: function (status, type, row) {
+          if (status === "Concluído" && row.completedAt) {
+            const completedDate = new Date(row.completedAt);
+            completedDate.setHours(completedDate.getHours() - 3);
+
+            const formattedDate  = new Date(completedDate).toLocaleString(
+              "pt-BR",
+              {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            );
+            return `
+              <div>
+                <span>${status}</span>
+                <br>
+                <small class="text-muted">${formattedDate }</small>
+              </div>
+            `;
+          }
+          return `<span>${status}</span>`;
+        },
+      },
       {
         data: null,
         render: function (data) {
@@ -28,8 +55,9 @@ export function initializeTaskTable() {
       decimal: ",",
       thousands: ".",
       search: "Buscar:",
-      lengthMenu: "Exibir _MENU_ registros por página",
       info: "Exibindo _START_ a _END_ de _TOTAL_ registros",
+      lengthMenu:
+        "<span>Exibir</span> _MENU_ <span>Registros por página</span>",
       infoEmpty: "Nenhum registro disponível",
       infoFiltered: "(filtrado de _MAX_ registros no total)",
       zeroRecords: "Nenhum registro encontrado",

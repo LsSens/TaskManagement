@@ -1,16 +1,37 @@
-body {
-    background-color: #f8f9fa;
-}
-
-.container {
-    margin-top: 50px;
-}
-
-.modal-content {
-    border-radius: 10px;
-}
-
-.btn-actions {
+#tasksTable_length label {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
+}
+
+#tasksTable_filter label {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.pagination {
+    justify-content: flex-end;
+}
+
+#tasksTable_filter label input {
+    max-width: 200px;
+}
+
+#tasksTable_length label select {
+    max-width: 70px;
+}
+
+#tasksTable_wrapper {
+    padding: 8px;
+    border: 1px solid;
+    border-radius: 8px;
+    border-color: #cecece;
+}
+
+#alertBootstrap {
+    right: 0;
+    top: 10%;
+    position: absolute;
 }
