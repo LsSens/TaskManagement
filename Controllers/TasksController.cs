@@ -65,7 +65,9 @@ public class TasksController : ControllerBase
         _context.Tasks.Add(task);
         _context.SaveChanges();
 
-        return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, task);
+        return CreatedAtAction(nameof(GetTaskById),
+         new { id = task.Id },
+         new { success = true, message = "Tarefa criada com sucesso.", data = task });
     }
 
     [HttpPut("{id}")]
@@ -112,7 +114,7 @@ public class TasksController : ControllerBase
         }
 
         _context.SaveChanges();
-        return NoContent();
+        return Ok(new { success = true, message = "Tarefa atualizada com sucesso.", data = existingTask });
     }
 
 
@@ -125,6 +127,6 @@ public class TasksController : ControllerBase
 
         _context.Tasks.Remove(task);
         _context.SaveChanges();
-        return NoContent();
+        return Ok(new { success = true, message = "Tarefa excluída com sucesso." });
     }
 }
