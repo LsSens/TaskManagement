@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=tasks.db"));
-
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -16,22 +15,30 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+    c.RoutePrefix = "api-docs";
+});
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
-// app.UseHttpsRedirection();   
-
+app.UseStaticFiles();
 app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
 
-
-app.MapStaticAssets();
+app.MapGet("/index.html", context =>
+{
+    context.Response.Redirect("/Index");
+    return Task.CompletedTask;
+});
 
 app.Run();
