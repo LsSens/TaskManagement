@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/tasks")]
-public class TasksController : ControllerBase
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+public class TasksController(AppDbContext context) : ControllerBase
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 {
-    private readonly AppDbContext _context;
-
-    public TasksController(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     /// <summary>
     /// Obtém todas as tarefas com suporte a filtro por status.
