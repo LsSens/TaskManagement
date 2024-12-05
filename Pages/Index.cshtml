@@ -1,0 +1,62 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestão de Tarefas</h1>
+        <button id="createTaskBtn">Criar Tarefa</button>
+        <table id="tasksTable" class="display">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const table = $('#tasksTable').DataTable({
+                ajax: '/api/tasks',
+                columns: [
+                    { data: 'title' },
+                    { data: 'description' },
+                    { data: 'priority' },
+                    { data: 'status' },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                                <button onclick="editTask(${data.id})">Editar</button>
+                                <button onclick="deleteTask(${data.id})">Excluir</button>
+                            `;
+                        }
+                    }
+                ]
+            });
+
+            // Refresh data on creation or update
+            $('#createTaskBtn').click(function () {
+                // Open modal for creation
+            });
+        });
+    </script>
+</body>
+
+</html>
