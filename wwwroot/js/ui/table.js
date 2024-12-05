@@ -1,6 +1,6 @@
 import { fetchTaskById, deleteTaskById } from "../api/tasks.js";
 import { showAlert } from "../main.js";
-import { openTaskModal } from "./modals.js";
+import { openTaskModal } from "./modal.js";
 
 export function initializeTaskTable() {
   const table = $("#tasksTable").DataTable({
@@ -78,14 +78,14 @@ export function initializeTaskTable() {
       const task = await fetchTaskById(taskId);
       openTaskModal(task);
     } catch (error) {
-      alert(error.message);
+      const errorMessage = error.message || "Erro ao carregar tarefas";
+      showAlert(errorMessage, "danger");
     }
   });
 
   $("#tasksTable").on("click", ".delete-btn", function () {
     const taskId = $(this).data("id");
     const taskTitle = $(this).data("title");
-    console.log(this);
 
     $("#deleteTaskMessage").text(
       `Tem certeza que deseja deletar a tarefa "${taskTitle}"?`
@@ -99,12 +99,12 @@ export function initializeTaskTable() {
     const taskId = $(this).data("id");
 
     try {
-      await deleteTaskById(taskId);
+      const response = await deleteTaskById(taskId);
       table.ajax.reload();
       $("#deleteTaskModal").modal("hide");
-      showAlert("Tarefa excluída com sucesso!", "success");
+      showAlert(response.message || "Tarefa excluída com sucesso!", "success");
     } catch (error) {
-      showAlert("Erro ao excluir a tarefa!", "danger");
+      showAlert(error.message || "Erro ao excluir a tarefa!", "danger");
     }
   });
 

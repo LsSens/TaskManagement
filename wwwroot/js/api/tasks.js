@@ -14,10 +14,19 @@ export async function saveTask(taskId, taskData) {
     body: JSON.stringify(taskData),
   });
 
-  if (!response.ok) throw new Error("Erro ao salvar tarefa.");
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao processar a solicitação.");
+  }
+
+  return response.json();
 }
 
 export async function deleteTaskById(id) {
   const response = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
-  if (!response.ok) throw new Error("Erro ao excluir tarefa.");
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao processar a solicitação.");
+  }
+  return response.json();
 }

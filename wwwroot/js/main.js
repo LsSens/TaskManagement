@@ -23,10 +23,9 @@ $(document).ready(function () {
       closeTaskModal();
       taskTable.ajax.reload();
 
-      showAlert("Tarefa salva com sucesso!", "success");
+      showAlert(response.message || "Tarefa salva com sucesso!", "success");
     } catch (error) {
-      const errorMessage =
-        error.responseJSON?.message || "Erro ao salvar a tarefa!";
+      const errorMessage = error.message || "Erro ao salvar a tarefa!";
       showAlert(errorMessage, "danger");
     }
   });
