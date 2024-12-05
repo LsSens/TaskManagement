@@ -124,10 +124,10 @@
                     decimal: ",",
                     thousands: ".",
                     search: "Buscar:",
-                    lengthMenu: "Exibir _MENU_ registros por página",
-                    info: "Exibindo _START_ a _END_ de _TOTAL_ registros",
+                    lengthMenu: "Exibir _MENU_ Registros por página",
+                    info: "Exibindo _START_ a _END_ de _TOTAL_ Registros",
                     infoEmpty: "Nenhum registro disponível",
-                    infoFiltered: "(filtrado de _MAX_ registros no total)",
+                    infoFiltered: "(filtrado de _MAX_ Registros no total)",
                     loadingRecords: "Carregando...",
                     processing: "Processando...",
                     zeroRecords: "Nenhum registro encontrado",
@@ -156,22 +156,32 @@
             // Submeter o formulário
             $('#taskForm').submit(function (e) {
                 e.preventDefault();
-                const formData = $(this).serialize();
-                const isEditing = $('#taskId').val();
 
-                const url = isEditing ? `/api/tasks/${$('#taskId').val()}` : '/api/tasks';
-                const method = isEditing ? 'PUT' : 'POST';
+                // Obtém os dados do formulário e converte para um objeto JavaScript
+                const taskId = $('#taskId').val(); // O ID da tarefa
+                const taskData = {
+                    title: $('#taskTitle').val(),
+                    description: $('#taskDescription').val(),
+                    priority: $('#taskPriority').val(),
+                    status: $('#taskStatus').val()
+                };
 
+                // Define a URL e o método
+                const url = taskId ? `/api/tasks/${taskId}` : '/api/tasks';
+                const method = taskId ? 'PUT' : 'POST';
+
+                // Faz a requisição AJAX
                 $.ajax({
                     url: url,
                     method: method,
-                    data: formData,
+                    contentType: 'application/json', // Define o Content-Type como JSON
+                    data: JSON.stringify(taskData), // Converte os dados para JSON
                     success: function () {
-                        $('#taskModal').modal('hide');
-                        table.ajax.reload(); // Atualiza a tabela
+                        $('#taskModal').modal('hide'); // Fecha o modal
+                        $('#tasksTable').DataTable().ajax.reload(); // Atualiza a tabela
                     },
-                    error: function () {
-                        alert('Erro ao salvar a tarefa!');
+                    error: function (xhr, status, error) {
+                        alert('Erro ao salvar a tarefa! ' + xhr.responseText);
                     }
                 });
             });
