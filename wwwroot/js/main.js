@@ -32,7 +32,7 @@ $(document).ready(function () {
   });
 });
 
-function showAlert(message, type) {
+export function showAlert(message, type) {
   const alertBox = `
     <div class="alert alert-${type} alert-dismissible fade show" role="alert">
       ${message}

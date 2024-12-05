@@ -1,4 +1,5 @@
 import { fetchTaskById, deleteTaskById } from "../api/tasks.js";
+import { showAlert } from "../main.js";
 import { openTaskModal } from "./modals.js";
 
 export function initializeTaskTable() {
@@ -15,7 +16,7 @@ export function initializeTaskTable() {
             const completedDate = new Date(row.completedAt);
             completedDate.setHours(completedDate.getHours() - 3);
 
-            const formattedDate  = new Date(completedDate).toLocaleString(
+            const formattedDate = new Date(completedDate).toLocaleString(
               "pt-BR",
               {
                 day: "2-digit",
@@ -29,7 +30,7 @@ export function initializeTaskTable() {
               <div>
                 <span>${status}</span>
                 <br>
-                <small class="text-muted">${formattedDate }</small>
+                <small class="text-muted">${formattedDate}</small>
               </div>
             `;
           }
@@ -42,7 +43,7 @@ export function initializeTaskTable() {
           return `
                         <div class="btn-actions">
                             <button class="btn btn-warning btn-sm edit-btn" data-id="${data.id}">Editar</button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${data.id}">Excluir</button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${data.id}" data-title="${data.title}">Excluir</button>
                         </div>
                     `;
         },
@@ -81,15 +82,29 @@ export function initializeTaskTable() {
     }
   });
 
-  $("#tasksTable").on("click", ".delete-btn", async function () {
+  $("#tasksTable").on("click", ".delete-btn", function () {
     const taskId = $(this).data("id");
-    if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
-      try {
-        await deleteTaskById(taskId);
-        table.ajax.reload();
-      } catch (error) {
-        alert(error.message);
-      }
+    const taskTitle = $(this).data("title");
+    console.log(this);
+
+    $("#deleteTaskMessage").text(
+      `Tem certeza que deseja deletar a tarefa "${taskTitle}"?`
+    );
+    $("#confirmDeleteBtn").data("id", taskId);
+
+    $("#deleteTaskModal").modal("show");
+  });
+
+  $("#confirmDeleteBtn").click(async function () {
+    const taskId = $(this).data("id");
+
+    try {
+      await deleteTaskById(taskId);
+      table.ajax.reload();
+      $("#deleteTaskModal").modal("hide");
+      showAlert("Tarefa excluída com sucesso!", "success");
+    } catch (error) {
+      showAlert("Erro ao excluir a tarefa!", "danger");
     }
   });
 
