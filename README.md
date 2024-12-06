@@ -22,6 +22,7 @@ Este projeto é uma aplicação de gerenciamento de tarefas desenvolvida com ASP
 1. Clone o repositório
 2. Restaure as dependências e aplique as migrações do banco de dados
 3. Execute o servidor
+`dotnet ef database update`
 `dotnet run`
 4. Acesse a aplicação no navegador
 `http://localhost:5298/`
