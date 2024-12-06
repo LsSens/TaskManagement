@@ -11,4 +11,7 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app .
+
+RUN dotnet ef database update --verbose
+
 ENTRYPOINT ["dotnet", "TaskManagement.dll"]
