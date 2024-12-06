@@ -1,10 +1,18 @@
 import { fetchTaskById, deleteTaskById } from "../api/tasks.js";
 import { showAlert } from "../main.js";
-import { openTaskModal } from "./modal.js";
+import { openTaskModal } from "./modals.js";
 
 export function initializeTaskTable() {
   const table = $("#tasksTable").DataTable({
-    ajax: "/api/tasks",
+    ajax: {
+      url: "/api/tasks",
+      data: function (d) {
+        const status = $("#statusFilter").val();
+        if (status) {
+          d.status = status;
+        }
+      },
+    },
     columns: [
       { data: "title" },
       { data: "description" },
@@ -55,10 +63,10 @@ export function initializeTaskTable() {
     language: {
       decimal: ",",
       thousands: ".",
-      search: "Buscar:",
+      search: "",
       info: "Exibindo _START_ a _END_ de _TOTAL_ registros",
       lengthMenu:
-        "<span>Exibir</span> _MENU_ <span>Registros por página</span>",
+        "<span>Exibir</span> _MENU_ <span style='width: 80px'>Por página</span>",
       infoEmpty: "Nenhum registro disponível",
       infoFiltered: "(filtrado de _MAX_ registros no total)",
       zeroRecords: "Nenhum registro encontrado",
@@ -70,6 +78,32 @@ export function initializeTaskTable() {
         last: "Último",
       },
     },
+    dom: '<"d-flex justify-content-between align-items-center"<"d-flex align-items-center"l><"d-flex align-items-center justify-content-center"<"#custom-search-wrapper">>t<"#statusFilterWrapper">>t<"d-flex justify-content-between"ip>',
+  });
+
+  $("#custom-search-wrapper").html(`
+    <div class="input-group">
+      <div class="form-outline">
+        <input id="search-input" type="search" class="form-control" placeholder="Buscar" />
+      </div>
+    </div>
+  `);
+
+  $("#statusFilterWrapper").html(`
+    <select id="statusFilter" class="form-select form-select-sm ms-2" style="max-width: 144px;">
+      <option value="">Todos os Status</option>
+      <option value="pendente">Pendente</option>
+      <option value="concluido">Concluído</option>
+    </select>
+  `);
+
+  $("#search-input").on("keyup", function () {
+    const searchTerm = $(this).val();
+    table.search(searchTerm).draw();
+  });
+
+  $("#statusFilter").on("change", function () {
+    table.ajax.reload();
   });
 
   $("#tasksTable").on("click", ".edit-btn", async function () {
