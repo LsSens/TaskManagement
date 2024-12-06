@@ -2,6 +2,11 @@
 ### Descrição
 Este projeto é uma aplicação de gerenciamento de tarefas desenvolvida com ASP.NET Core, utilizando Razor Pages e API RESTful. Ele foi projetado para ser dinâmico e responsivo, com integração completa de operações via AJAX.
 
+#### Aplicação rodando
+FRONT: [https://taskmanagement-production-bffb.up.railway.app](https://taskmanagement-production-bffb.up.railway.app "https://taskmanagement-production-bffb.up.railway.app")
+
+DOC API: [https://taskmanagement-production-bffb.up.railway.app/api-docs](https://taskmanagement-production-bffb.up.railway.app/api-docs "https://taskmanagement-production-bffb.up.railway.app/api-docs")
+
 ### Funcionalidades
 - Operações CRUD completas para tarefas.
 - Listagem dinâmica com DataTables, suportando:
