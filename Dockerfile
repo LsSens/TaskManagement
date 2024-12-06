@@ -15,4 +15,5 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app .
+COPY tasks.db /app/tasks.db
 ENTRYPOINT ["dotnet", "TaskManagement.dll"]
