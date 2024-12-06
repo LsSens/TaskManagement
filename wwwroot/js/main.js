@@ -5,10 +5,8 @@ import { saveTask } from "./api/tasks.js";
 $(document).ready(function () {
   const taskTable = initializeTaskTable();
 
-  // Evento para abrir o modal de criação de tarefa
   $("#createTaskBtn").click(() => openTaskModal());
 
-  // Evento para salvar a tarefa
   $("#taskForm").submit(async function (e) {
     e.preventDefault();
 
@@ -32,10 +30,8 @@ $(document).ready(function () {
     }
   });
 
-  // Evento para baixar o Excel
   $("#csvTasksBtn").on("click", async function () {
     try {
-      // Obtém todos os dados da tabela
       const data = taskTable.rows({ search: "applied" }).data().toArray();
 
       if (data.length === 0) {
@@ -43,7 +39,6 @@ $(document).ready(function () {
         return;
       }
 
-      // Chama a função para gerar e baixar o Excel
       downloadExcel(data);
 
       showAlert("Excel gerado com sucesso!", "success");
@@ -53,9 +48,7 @@ $(document).ready(function () {
   });
 });
 
-// Função para converter e baixar os dados como Excel
 function downloadExcel(data) {
-  // Mapeia os dados para o formato correto
   const excelData = data.map((task) => ({
     Título: task.title,
     Descrição: task.description || "N/A",
@@ -72,25 +65,20 @@ function downloadExcel(data) {
       : "N/A",
   }));
 
-  // Cria a planilha
   const ws = XLSX.utils.json_to_sheet(excelData);
 
-  // Ajusta a largura das colunas automaticamente
   const columnWidths = Object.keys(excelData[0] || {}).map((key) => ({
     wpx: Math.max(100, key.length * 10),
   }));
 
   ws["!cols"] = columnWidths;
 
-  // Cria o workbook e adiciona a planilha
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Tarefas");
 
-  // Gera e baixa o arquivo Excel
-  XLSX.writeFile(wb, "tarefas.xlsx");
+  XLSX.writeFile(wb, "tarefas.csv"); // PODER SER UTILIZADO EM CSV
 }
 
-// Função para exibir alertas
 export function showAlert(message, type) {
   const alertBox = `
     <div class="alert alert-${type} alert-dismissible fade show" role="alert">

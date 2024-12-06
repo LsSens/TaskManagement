@@ -80,6 +80,17 @@ public class TasksController(AppDbContext context) : ControllerBase
             return BadRequest(new { message = "Os campos Título, Prioridade e Status são obrigatórios." });
         }
 
+        var existingTask = _context.Tasks.FirstOrDefault(t => t.Title == task.Title);
+        if (existingTask != null)
+        {
+            return Conflict(new
+            {
+                success = false,
+                message = "Já existe uma tarefa com este título.",
+                existingTaskId = existingTask.Id
+            });
+        }
+
         _context.Tasks.Add(task);
         _context.SaveChanges();
 
