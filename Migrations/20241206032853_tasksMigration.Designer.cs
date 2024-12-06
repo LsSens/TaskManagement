@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TaskManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241205191752_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241206032853_tasksMigration")]
+    partial class tasksMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,6 @@ namespace TaskManagement.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
