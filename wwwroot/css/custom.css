@@ -35,3 +35,9 @@
     top: 10vh;
     position: absolute;
 }
+
+@media (max-width: 768px) {
+    #tasksTable_wrapper {
+        overflow: auto;
+    }
+}
