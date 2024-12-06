@@ -22,10 +22,9 @@ Este projeto é uma aplicação de gerenciamento de tarefas desenvolvida com ASP
 1. Clone o repositório
 2. Restaure as dependências e aplique as migrações do banco de dados
 3. Execute o servidor
-`dotnet restore dotnet ef `
-`database update`
-4. Acesse a aplicação no navegador
 `dotnet run`
+4. Acesse a aplicação no navegador
+`http://localhost:5298/`
 
 ## Documentação dos Endpoints
 - Os endpoints da API estão documentados diretamente no projeto pela utilização do swagger.
